@@ -1,22 +1,14 @@
-#
 # This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
+# the 'Run App' button in the RStudio IDE.
 
 library(shiny)
 
-# Define UI for application that draws a histogram
+# Define the user interface
 ui <- fluidPage(
     withMathJax(),
 
-    # Application title
     titlePanel("Donsker's theorem"),
 
-    # Sidebar with a slider input for number of bins 
     sidebarLayout(
         sidebarPanel(
             numericInput(inputId = "n",
@@ -32,7 +24,6 @@ ui <- fluidPage(
                          label = "Update")
         ),
 
-        # Show a plot of the generated distribution
         mainPanel(
            plotOutput("trajectories"),
            uiOutput("formula")
@@ -40,7 +31,7 @@ ui <- fluidPage(
     )
 )
 
-# Define server logic required to draw a histogram
+# Define server logic
 server <- function(input, output) {
     invoer <- eventReactive(input$go, {
         list(n = input$n,
