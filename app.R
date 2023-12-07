@@ -7,7 +7,7 @@ library(shiny)
 ui <- fluidPage(
     withMathJax(),
 
-    titlePanel("Donsker's theorem"),
+    titlePanel("Coin tosses and Brownian motion"),
 
     sidebarLayout(
         sidebarPanel(
@@ -15,7 +15,7 @@ ui <- fluidPage(
                          label = "Sample size n:",
                          value = 25),
             numericInput(inputId = "horizon",
-                         label = "Horizon:",
+                         label = "Zoom factor:",
                          value = 1),
             numericInput(inputId = "trajectories", 
                          label = "Number of trajectories:",
@@ -50,7 +50,8 @@ server <- function(input, output) {
             Bn <- S / sqrt(data$n)
             plot(x = (0:(data$n*data$horizon))/data$n, y = Bn, type = "l",
                  xlab = "time t",
-                 ylab = expression(B[n](t) == S[nt]/sqrt(n)))
+                 ylab = "trajectory",
+                 cex.lab = 1.3)
         } else {
             X <- matrix(sample(x = c(-1, 1), 
                                size = data$n * data$horizon * data$trajectories, 
@@ -60,24 +61,24 @@ server <- function(input, output) {
             Bn <- S / sqrt(data$n)
             matplot(x = (0:(data$n*data$horizon))/data$n, y = Bn, type = "l", lty = 1,
                  xlab = "time t",
-                 ylab = expression(B[n](t) == S[nt]/sqrt(n)))
+                 ylab = "trajectory",
+                 cex.lab = 1.3)
         }
-        title("Approximated Brownian motion trajectory", cex.main = 2)
         abline(h = 0, lty = "dashed")
     })
     
     output$formula <- renderUI({
-        withMathJax("Independent and identically distributed random variables \\(X_1, X_2, \\ldots\\) such that
+        withMathJax("Independent and identically distributed random variables \\(Y_1, Y_2, \\ldots\\) such that
         $$
-            P(X_i = 1) = P(X_i = -1) = \\frac{1}{2}
+            P(Y_i = +1) = P(Y_i = -1) = \\frac{1}{2}
         $$
         Partial sums:
         $$
-            S_n = X_1 + \\cdots + X_n
+            S_n = Y_1 + \\cdots + Y_n
         $$
         Trajectory of approximation to Brownian motion:
         $$
-            B_n(t) = \\frac{S_{[nt]}}{\\sqrt{n}}
+            B_{n,t} = \\frac{S_{nt}}{\\sqrt{n}}
         $$")
     })
 }
